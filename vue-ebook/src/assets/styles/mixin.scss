@@ -1,0 +1,23 @@
+$ratio: 375 / 10;
+
+@function px2rem($px){
+  @return $px / $ratio + rem;
+}
+
+@mixin center {
+  display: flex;
+  justify-content: center; // 水平居中
+  align-items: center; // 垂直居中
+}
+
+@mixin left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center; // 垂直居中
+}
+
+@mixin right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center; // 垂直居中
+}

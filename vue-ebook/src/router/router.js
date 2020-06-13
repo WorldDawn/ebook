@@ -11,11 +11,11 @@ export default new Router({
     },
     {
       path: '/ebook',
-      component: () => import('./views/ebook/index'),
+      component: () => import('../views/ebook/index'),
       children: [
         {
           path: ':fileName',
-          component: () => import('./components/ebook/EbookReader')
+          component: () => import('../components/ebook/EbookReader')
         }
       ]
     }

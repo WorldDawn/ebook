@@ -34,12 +34,75 @@
 
 <script>
   import { ebookMinx } from '../../utils/mixin'
+  import { getReadTime } from '../../utils/localStorage'
   export default {
     name: 'EbookSettingProgress',
     mixins: [ebookMinx],
+    computed: {
+      getSectionName() {
+        if (this.section) {
+          const sectionInfo = this.currentBook.section(this.section)
+          if (sectionInfo && sectionInfo.href) {
+            return this.currentBook.navigation.get(sectionInfo.href).label
+          }
+        }
+        return ''
+      }
+    },
     methods: {
-      onProgressChange(progress) {},
-      onProgressInput(progress) {}
+      onProgressChange (progress) {
+        this.setProgress(progress).then(() => {
+          this.displayProgress()
+          this.updateProgressBg()
+        })
+      },
+      onProgressInput (progress) {
+        this.setProgress(progress).then(() => {
+          this.updateProgressBg()
+        })
+      },
+      displayProgress () {
+        const cfi = this.currentBook.locations.cfiFromPercentage(this.progress / 100)
+        this.display(cfi)
+      },
+      updateProgressBg () {
+        // this.$refs.progress.style.backgroundSize = `${this.progress}%  100%`
+        this.$refs.progress.style.cssText = `background-size:${this.progress}% 100% !important`
+      },
+      prevSection () {
+        if (this.section > 0 && this.bookAvailable) {
+          this.setSection(this.section - 1).then(() => {
+            this.displaySection()
+          })
+        }
+      },
+      nextSection () {
+        if (this.section < this.currentBook.spine.length - 1 && this.bookAvailable) {
+          this.setSection(this.section + 1).then(() => {
+            this.displaySection()
+          })
+        }
+      },
+      displaySection () {
+        const sectionInfo = this.currentBook.section(this.section)
+        if (sectionInfo && sectionInfo.href) {
+          this.display(sectionInfo.href)
+        }
+      },
+      getReadTimeText () {
+        return this.$t('book.haveRead').replace('$1', this.getReadTimeByMinute())
+      },
+      getReadTimeByMinute() {
+        const readTime = getReadTime(this.fileName)
+        if (!readTime) {
+          return 0
+        } else {
+          return Math.ceil(readTime / 60)
+        }
+      },
+      updated () {
+        this.updateProgressBg()
+      }
     }
   }
 </script>

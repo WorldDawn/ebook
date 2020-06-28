@@ -72,11 +72,13 @@ export const ebookMinx = {
     },
     refreshLocation () {
       const currentLocation = this.currentBook.rendition.currentLocation()
-      const startCfi = currentLocation.start.cfi
-      const progress = this.currentBook.locations.percentageFromCfi(startCfi)
-      this.setSection(currentLocation.start.index)
-      this.setProgress(Math.floor(progress * 100))
-      saveLocation(this.fileName, startCfi)
+      if (currentLocation && currentLocation.start) {
+        const startCfi = currentLocation.start.cfi
+        const progress = this.currentBook.locations.percentageFromCfi(startCfi)
+        this.setSection(currentLocation.start.index)
+        this.setProgress(Math.floor(progress * 100))
+        saveLocation(this.fileName, startCfi)
+      }
     },
     display(target, cb) {
       if (target) {

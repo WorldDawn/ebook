@@ -1,6 +1,6 @@
 import { mapActions, mapGetters } from 'vuex'
 import { themeList, setGlobalTheme, getReadTimeByMinute } from './book'
-import { saveLocation } from './localStorage'
+import { getBookmark, saveLocation } from './localStorage'
 
 export const ebookMinx = {
   computed: {
@@ -72,12 +72,24 @@ export const ebookMinx = {
     },
     refreshLocation () {
       const currentLocation = this.currentBook.rendition.currentLocation()
+      console.log(currentLocation)
       if (currentLocation && currentLocation.start) {
         const startCfi = currentLocation.start.cfi
         const progress = this.currentBook.locations.percentageFromCfi(startCfi)
         this.setSection(currentLocation.start.index)
         this.setProgress(Math.floor(progress * 100))
         saveLocation(this.fileName, startCfi)
+        const bookmark = getBookmark(this.fileName)
+        console.log(bookmark)
+        if (bookmark) {
+          if (bookmark.some(item => item.cfi === startCfi)) {
+            this.setIsBookmark(true)
+          } else {
+            this.setIsBookmark(false)
+          }
+        } else {
+          this.setIsBookmark(false)
+        }
       }
     },
     display(target, cb) {

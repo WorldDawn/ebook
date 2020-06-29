@@ -24,7 +24,6 @@
     },
     methods: {
       refresh() {
-        console.log(this.height, this.width)
         if (this.height && this.width) {
           this.$refs.bookmark.style.borderWidth = `${px2rem(this.height -
             5)}rem ${px2rem(this.width / 2)}rem ${px2rem(5)}rem ${px2rem(this.width /
@@ -43,7 +42,7 @@
     .bookmark {
       width: 0;
       height: 0;
-      border-width: px2rem(40) px2rem(10) px2rem(10) px2rem(10);
+      border-width: px2rem(50) px2rem(10) px2rem(10) px2rem(10);
       border-style: solid;
       border-color: white white transparent white;
     }

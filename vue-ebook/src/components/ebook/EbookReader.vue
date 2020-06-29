@@ -201,7 +201,6 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-
     .ebook-reader-mask {
       position: absolute;
       top: 0;
